@@ -12,10 +12,9 @@
 
 <body class="bg-slate-50">
 
-    <header class="w-[80%] mx-auto py-20">
+    <header class="w-[95%] md:w-[80%] mx-auto py-10 md:py-20">
         <h1 class="text-3xl font-bold pb-5">Job Application Tracker</h1>
-
-        <div class="grid grid-cols-3 gap-16">
+        <div class="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-16">
             <div class="bg-white border border-gray-100 rounded-md p-5">
                 <p>Total</p>
                 <p id="total" class="text-3xl font-bold">0</p>
@@ -33,21 +32,19 @@
         </div>
     </header>
 
-    <hr class="w-[80%] mx-auto text-gray-300">
+    <hr class="w-[95%] md:w-[80%] mx-auto text-gray-300">
 
-    <main class="w-[80%] mx-auto">
+    <main class="w-[95%] md:w-[80%] mx-auto">
         <div>
-            <div class="flex justify-between py-5">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center py-5 gap-3">
                 <p class="text-2xl font-bold">Available Jobs</p>
                 <p id="available-count" class="text-2xl text-gray-500">0 jobs</p>
             </div>
-
-            <div class="flex gap-4">
+            <div class="flex flex-wrap gap-3 md:gap-4">
                 <button id="filter-btn" onclick="toggleStyle('filter-btn')"
                     class="border bg-blue-600 py-2 px-6 rounded font-bold text-white">
                     All
                 </button>
-
                 <button id="interview-btn" onclick="toggleStyle('interview-btn')"
                     class="border bg-white py-2 px-6 rounded font-bold text-black">
                     Interview
@@ -59,11 +56,8 @@
                 </button>
             </div>
         </div>
-
         <section id="after-filter" class="hidden"></section>
-
         <div id="cardsItems">
-
             <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card">
                 <div>
                     <div class="mb-2">
@@ -90,13 +84,11 @@
                             class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
                             Interview
                         </button>
-
                         <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
                             Rejected
                         </button>
                     </div>
                 </div>
-
                 <div>
                     <button class="delete-btn border rounded-full p-2 border-gray-300">
                         <i class="fa-solid fa-trash-can"></i>
