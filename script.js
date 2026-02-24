@@ -21,6 +21,7 @@ function updateCount() {
     rejectedCount.innerText = totalRejection.length;
     availableCount.innerText = allCards + " jobs";
 }
+
 updateCount();
 function toggleStyle(id) {
 
@@ -30,6 +31,7 @@ function toggleStyle(id) {
         btn.classList.remove("bg-blue-600", "text-white");
         btn.classList.add("bg-white", "text-black");
     });
+
     const activeBtn = document.getElementById(id);
     activeBtn.classList.remove("bg-white", "text-black");
     activeBtn.classList.add("bg-blue-600", "text-white");
@@ -51,6 +53,7 @@ function toggleStyle(id) {
         renderFiltered(totalRejection);
     }
 }
+
 document.querySelector("main").addEventListener("click", function (e) {
     const card = e.target.closest(".job-card");
     if (!card) return;
@@ -117,6 +120,8 @@ document.querySelector("main").addEventListener("click", function (e) {
         }
     }
 });
+
+/*Toggle filtering after click*/
 function renderFiltered(dataArray) {
     afterFilter.innerHTML = "";
     dataArray.forEach(job => {
