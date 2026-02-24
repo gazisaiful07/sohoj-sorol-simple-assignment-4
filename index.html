@@ -6,142 +6,325 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body class="bg-slate-50">
+
     <header class="w-[80%] mx-auto py-20">
         <h1 class="text-3xl font-bold pb-5">Job Application Tracker</h1>
-        <div class="grid grid-cols-3 gap-16 ">
+
+        <div class="grid grid-cols-3 gap-16">
             <div class="bg-white border border-gray-100 rounded-md p-5">
-                <p class=" ">Total</p>
+                <p>Total</p>
                 <p id="total" class="text-3xl font-bold">0</p>
             </div>
+
             <div class="bg-white border border-gray-100 rounded-md p-5">
-                <p class=" ">Interview</p>
+                <p>Interview</p>
                 <p id="interview" class="text-3xl font-bold text-green-700">0</p>
             </div>
+
             <div class="bg-white border border-gray-100 rounded-md p-5">
-                <p class=" ">Rejected</p>
-                <p id="rejected" class=" text-3xl font-bold text-red-700">0</p>
+                <p>Rejected</p>
+                <p id="rejected" class="text-3xl font-bold text-red-700">0</p>
             </div>
         </div>
     </header>
-    <hr class="w-[80%] mx-auto text-gray-300">
-    <main class="w-[80%] mx-auto">
-        <div class="">
-            <div class="flex justify-between py-5">
-                <p class=" text-2xl font-bold">Available Jobs</p>
-                <p class=" text-2xl text-gray-500">0 jobs</p>
-            </div>
-            <button id="filter-btn" onclick="toggleStyle('filter-btn')"
-                class=" border border-gray-100 bg-blue-600 py-2.5 px-8 rounded-sm font-bold text-white">All</button>
-            <button id="interview-btn" onclick="toggleStyle('interview-btn')"
-                class=" border border-gray-100 bg-white py-2.5 px-8 rounded-sm font-bold text-gray-600">Interview
-            </button>
-            <button id="reject-btn" onclick="toggleStyle('reject-btn')"
-                class=" border border-gray-100 bg-white py-2.5 px-8 rounded-sm font-bold text-gray-600">Rejected</button>
-        </div>
-        <section id="after-filter" class="hidden">
 
-        </section>
+    <hr class="w-[80%] mx-auto text-gray-300">
+
+    <main class="w-[80%] mx-auto">
+        <div>
+            <div class="flex justify-between py-5">
+                <p class="text-2xl font-bold">Available Jobs</p>
+                <p id="available-count" class="text-2xl text-gray-500">0 jobs</p>
+            </div>
+
+            <div class="flex gap-4">
+                <button id="filter-btn" onclick="toggleStyle('filter-btn')"
+                    class="border bg-blue-600 py-2 px-6 rounded font-bold text-white">
+                    All
+                </button>
+
+                <button id="interview-btn" onclick="toggleStyle('interview-btn')"
+                    class="border bg-white py-2 px-6 rounded font-bold text-black">
+                    Interview
+                </button>
+
+                <button id="reject-btn" onclick="toggleStyle('reject-btn')"
+                    class="border bg-white py-2 px-6 rounded font-bold text-black">
+                    Rejected
+                </button>
+            </div>
+        </div>
+
+        <section id="after-filter" class="hidden"></section>
+
         <div id="cardsItems">
 
-            <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white">
+            <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card">
                 <div>
                     <div class="mb-2">
-                        <p class=" jobName text-2xl font-bold">Mobile First Corp</p>
-                        <p class=" jobPosition text-gray-500">React Native Developer</p>
+                        <p class="jobName text-2xl font-bold">Mobile First Corp</p>
+                        <p class="jobPosition text-gray-500">React Native Developer</p>
                     </div>
-                    <p class=" jobSalary mb-2 text-gray-500">Remote • Full-time • $130,000 - $175,000 </p>
-                    <div class=" mb-5">
-                        <button class=" jobStatus bg-blue-100 py-1 px-2 rounded-b-sm text-gray-900 mb-2">NOT
-                            APPLIED</button>
-                        <p class="jobDetails text-gray-700">Build cross-platform mobile applications using React
-                            Native. Work on
-                            products used by millions of
-                            users worldwide.</p>
+
+                    <p class="jobSalary mb-2 text-gray-500">
+                        Remote • Full-time • $130,000 - $175,000
+                    </p>
+
+                    <div class="mb-5">
+                        <button class="jobStatus bg-blue-100 py-1 px-2 rounded text-gray-900 mb-2">
+                            NOT APPLIED
+                        </button>
+
+                        <p class="jobDetails text-gray-700">
+                            Build cross-platform mobile applications using React Native.
+                        </p>
                     </div>
-                    <div>
+
+                    <div class="flex gap-3">
                         <button
-                            class="border rounded-sm py-2 px-3 font-semibold uppercase border-green-600 text-green-600 cursor-pointer interview-btn">Interview</button>
-                        <button
-                            class="border rounded-sm py-2 px-3 font-semibold uppercase mx-1 border-red-600 text-red-600 cursor-pointer">Rejected</button>
+                            class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
+                            Interview
+                        </button>
+
+                        <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
+                            Rejected
+                        </button>
                     </div>
                 </div>
 
                 <div>
-                    <button class="border rounded-full p-2 border-gray-300 cursor-pointer"><i
-                            class="fa-solid fa-trash-can"></i></button>
+                    <button class="delete-btn border rounded-full p-2 border-gray-300">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                 </div>
             </div>
-            <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white">
+            <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card">
                 <div>
                     <div class="mb-2">
-                        <p class=" jobName text-2xl font-bold">Mobile First Corp 2</p>
-                        <p class=" jobPosition text-gray-500">React Native Developer</p>
+                        <p class="jobName text-2xl font-bold">TechNova Solutions</p>
+                        <p class="jobPosition text-gray-500">Frontend Developer</p>
                     </div>
-                    <p class=" jobSalary mb-2 text-gray-500">Remote • Full-time • $130,000 - $175,000  Disum Disum</p>
-                    <div class=" mb-5">
-                        <button class=" jobStatus bg-blue-100 py-1 px-2 rounded-b-sm text-gray-900 mb-2">NOT
-                            APPLIED</button>
-                        <p class="jobDetails text-gray-700">Build cross-platform mobile applications using React
-                            Native. Work on
-                            products used by millions of
-                            users worldwide.</p>
+                    <p class="jobSalary mb-2 text-gray-500">
+                        Remote • Full-time • $90,000 - $120,000
+                    </p>
+                    <div class="mb-5">
+                        <button class="jobStatus bg-blue-100 py-1 px-2 rounded text-gray-900 mb-2">NOT APPLIED</button>
+                        <p class="jobDetails text-gray-700">
+                            Develop modern UI using React and Tailwind CSS for SaaS platforms.
+                        </p>
                     </div>
-                    <div>
+                    <div class="flex gap-3">
                         <button
-                            class="border rounded-sm py-2 px-3 font-semibold uppercase border-green-600 text-green-600 cursor-pointer interview-btn">Interview</button>
-                        <button
-                            class="border rounded-sm py-2 px-3 font-semibold uppercase mx-1 border-red-600 text-red-600 cursor-pointer">Rejected</button>
+                            class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
+                            Interview
+                        </button>
+                        <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
+                            Rejected
+                        </button>
                     </div>
                 </div>
-
                 <div>
-                    <button class="border rounded-full p-2 border-gray-300 cursor-pointer"><i
-                            class="fa-solid fa-trash-can"></i></button>
+                    <button class="delete-btn border rounded-full p-2 border-gray-300">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                 </div>
             </div>
-            <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white">
+            <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card">
                 <div>
                     <div class="mb-2">
-                        <p class=" jobName text-2xl font-bold">Mobile First Corp 3</p>
-                        <p class=" jobPosition text-gray-500">React Native Developer</p>
+                        <p class="jobName text-2xl font-bold">CloudSync Inc</p>
+                        <p class="jobPosition text-gray-500">Backend Engineer</p>
                     </div>
-                    <p class=" jobSalary mb-2 text-gray-500">Remote • Full-time • $130,000 - $175,000 chiki moneky </p>
-                    <div class=" mb-5">
-                        <button class=" jobStatus bg-blue-100 py-1 px-2 rounded-b-sm text-gray-900 mb-2">NOT
-                            APPLIED</button>
-                        <p class="jobDetails text-gray-700">Build cross-platform mobile applications using React
-                            Native. Work on
-                            products used by millions of
-                            users worldwide.</p>
+                    <p class="jobSalary mb-2 text-gray-500">
+                        New York, USA • Full-time • $110,000 - $140,000
+                    </p>
+                    <div class="mb-5">
+                        <button class="jobStatus bg-blue-100 py-1 px-2 rounded text-gray-900 mb-2">NOT APPLIED</button>
+                        <p class="jobDetails text-gray-700">
+                            Build scalable APIs using Node.js and MongoDB.
+                        </p>
                     </div>
-                    <div>
+                    <div class="flex gap-3">
                         <button
-                            class="border rounded-sm py-2 px-3 font-semibold uppercase border-green-600 text-green-600 cursor-pointer interview-btn">Interview</button>
-                        <button
-                            class="border rounded-sm py-2 px-3 font-semibold uppercase mx-1 border-red-600 text-red-600 cursor-pointer">Rejected</button>
+                            class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
+                            Interview
+                        </button>
+                        <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
+                            Rejected
+                        </button>
                     </div>
                 </div>
-
                 <div>
-                    <button class="border rounded-full p-2 border-gray-300 cursor-pointer"><i
-                            class="fa-solid fa-trash-can"></i></button>
+                    <button class="delete-btn border rounded-full p-2 border-gray-300">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                 </div>
             </div>
-
-
-
-
+            <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card">
+                <div>
+                    <div class="mb-2">
+                        <p class="jobName text-2xl font-bold">PixelCraft Studio</p>
+                        <p class="jobPosition text-gray-500">UI/UX Designer</p>
+                    </div>
+                    <p class="jobSalary mb-2 text-gray-500">
+                        Remote • Contract • $70,000 - $95,000
+                    </p>
+                    <div class="mb-5">
+                        <button class="jobStatus bg-blue-100 py-1 px-2 rounded text-gray-900 mb-2">NOT APPLIED</button>
+                        <p class="jobDetails text-gray-700">
+                            Design intuitive dashboards and mobile app interfaces.
+                        </p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button
+                            class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
+                            Interview
+                        </button>
+                        <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
+                            Rejected
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <button class="delete-btn border rounded-full p-2 border-gray-300">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card">
+                <div>
+                    <div class="mb-2">
+                        <p class="jobName text-2xl font-bold">DataCore Analytics</p>
+                        <p class="jobPosition text-gray-500">Data Analyst</p>
+                    </div>
+                    <p class="jobSalary mb-2 text-gray-500">
+                        Boston, MA • Full-time • $85,000 - $110,000
+                    </p>
+                    <div class="mb-5">
+                        <button class="jobStatus bg-blue-100 py-1 px-2 rounded text-gray-900 mb-2">NOT APPLIED</button>
+                        <p class="jobDetails text-gray-700">
+                            Analyze large datasets and create BI dashboards.
+                        </p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button
+                            class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
+                            Interview
+                        </button>
+                        <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
+                            Rejected
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <button class="delete-btn border rounded-full p-2 border-gray-300">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card">
+                <div>
+                    <div class="mb-2">
+                        <p class="jobName text-2xl font-bold">AppVenture Labs</p>
+                        <p class="jobPosition text-gray-500">Mobile App Developer</p>
+                    </div>
+                    <p class="jobSalary mb-2 text-gray-500">
+                        Remote • Full-time • $100,000 - $135,000
+                    </p>
+                    <div class="mb-5">
+                        <button class="jobStatus bg-blue-100 py-1 px-2 rounded text-gray-900 mb-2">NOT APPLIED</button>
+                        <p class="jobDetails text-gray-700">
+                            Develop Android and iOS applications using Flutter.
+                        </p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button
+                            class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
+                            Interview
+                        </button>
+                        <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
+                            Rejected
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <button class="delete-btn border rounded-full p-2 border-gray-300">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card">
+                <div>
+                    <div class="mb-2">
+                        <p class="jobName text-2xl font-bold">SecureNet Systems</p>
+                        <p class="jobPosition text-gray-500">Cyber Security Specialist</p>
+                    </div>
+                    <p class="jobSalary mb-2 text-gray-500">
+                        Washington, DC • Full-time • $120,000 - $160,000
+                    </p>
+                    <div class="mb-5">
+                        <button class="jobStatus bg-blue-100 py-1 px-2 rounded text-gray-900 mb-2">NOT APPLIED</button>
+                        <p class="jobDetails text-gray-700">
+                            Monitor security threats and implement secure infrastructure.
+                        </p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button
+                            class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
+                            Interview
+                        </button>
+                        <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
+                            Rejected
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <button class="delete-btn border rounded-full p-2 border-gray-300">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card">
+                <div>
+                    <div class="mb-2">
+                        <p class="jobName text-2xl font-bold">AI Horizon</p>
+                        <p class="jobPosition text-gray-500">Machine Learning Engineer</p>
+                    </div>
+                    <p class="jobSalary mb-2 text-gray-500">
+                        Remote • Full-time • $130,000 - $170,000
+                    </p>
+                    <div class="mb-5">
+                        <button class="jobStatus bg-blue-100 py-1 px-2 rounded text-gray-900 mb-2">NOT APPLIED</button>
+                        <p class="jobDetails text-gray-700">
+                            Develop and deploy ML models for real-world applications.
+                        </p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button
+                            class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
+                            Interview
+                        </button>
+                        <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
+                            Rejected
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <button class="delete-btn border rounded-full p-2 border-gray-300">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
 
         </div>
 
     </main>
+
     <script src="script.js"></script>
 </body>
-
 
 </html>

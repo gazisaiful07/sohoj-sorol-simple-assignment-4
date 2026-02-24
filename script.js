@@ -1,147 +1,190 @@
 let totalInterview = [];
 let totalRejection = [];
+let currentFilter = "all";
 
-let total = document.getElementById('total');
-let selectInterview = document.getElementById('interview');
-let rejectedList = document.getElementById('rejected');
+const total = document.getElementById("total");
+const interviewCount = document.getElementById("interview");
+const rejectedCount = document.getElementById("rejected");
+const availableCount = document.getElementById("available-count");
 
-const filterBtn = document.getElementById('filter-btn')
-const interviewBtn = document.getElementById('interview-btn')
-const rejectionBtn = document.getElementById('reject-btn')
+const cardSection = document.getElementById("cardsItems");
+const afterFilter = document.getElementById("after-filter");
 
-const cardSection = document.getElementById('cardsItems')
-const mainContainer = document.querySelector('main')
-
-const afterFilter = document.getElementById('after-filter')
+const filterBtn = document.getElementById("filter-btn");
+const interviewBtn = document.getElementById("interview-btn");
+const rejectBtn = document.getElementById("reject-btn");
 
 
-function jobCount() {
-    document.querySelectorAll('#cardsItems').length
-    selectInterview.innerText = totalInterview.length
-    rejectedList.innerText = totalRejection.length
+function updateCount() {
+    const allCards = document.querySelectorAll("#cardsItems .job-card").length;
+
+    total.innerText = allCards;
+    interviewCount.innerText = totalInterview.length;
+    rejectedCount.innerText = totalRejection.length;
+    availableCount.innerText = allCards + " jobs";
 }
 
-jobCount();
+updateCount();
 
 function toggleStyle(id) {
 
+    currentFilter = id;
 
+    [filterBtn, interviewBtn, rejectBtn].forEach(btn => {
+        btn.classList.remove("bg-blue-600", "text-white");
+        btn.classList.add("bg-white", "text-black");
+    });
 
-    filterBtn.classList.remove('bg-blue-600', 'text-white');
-    interviewBtn.classList.remove('bg-blue-600', 'text-white');
-    rejectionBtn.classList.remove('bg-blue-600', 'text-white');
+    const activeBtn = document.getElementById(id);
+    activeBtn.classList.remove("bg-white", "text-black");
+    activeBtn.classList.add("bg-blue-600", "text-white");
 
-    filterBtn.classList.add('bg-white', 'text-black');
-    interviewBtn.classList.add('bg-white', 'text-black');
-    rejectionBtn.classList.add('bg-white', 'text-black');
+    afterFilter.innerHTML = "";
 
-    const selected = document.getElementById(id);
-    selected.classList.remove('bg-white', 'text-black');
-    selected.classList.add('bg-blue-600', 'text-white');
-
-
-
-    // console.log(selected)
-
-    selected.classList.remove('bg-white', 'text-black')
-    selected.classList.add('bg-blue-600', 'text-white')
-
-
-
-    if (id === 'interview-btn') {
-        cardSection.classList.add('hidden');
-        afterFilter.classList.remove('hidden');
+    if (id === "filter-btn") {
+        cardSection.classList.remove("hidden");
+        afterFilter.classList.add("hidden");
     }
 
-    else if (id === 'filter-btn') {
-        cardSection.classList.remove('hidden');
-        afterFilter.classList.add('hidden');
+    if (id === "interview-btn") {
+        cardSection.classList.add("hidden");
+        afterFilter.classList.remove("hidden");
+        renderFiltered(totalInterview);
     }
 
-    // }
-
-    // if (id === 'reject-btn') {
-    //     cardSection.classList.add('hidden');
-    //     afterFilter.classList.remove('hidden');
-
-    // }
-
+    if (id === "reject-btn") {
+        cardSection.classList.add("hidden");
+        afterFilter.classList.remove("hidden");
+        renderFiltered(totalRejection);
+    }
 }
 
-mainContainer.addEventListener('click', function (event) {
-    // console.log(event.target.parentNode)
-    console.log(event.target.classList.contains('interview-btn'))
-    if (event.target.classList.contains('interview-btn')) {
-        const parentNode = event.target.parentNode.parentNode;
+document.querySelector("main").addEventListener("click", function (e) {
 
-        const jobName = parentNode.querySelector('.jobName').innerText
-        const jobPosition = parentNode.querySelector('.jobPosition').innerText
-        const jobSalary = parentNode.querySelector('.jobSalary').innerText
-        const jobStatus = parentNode.querySelector('.jobStatus').innerText
-        const jobDetails = parentNode.querySelector('.jobDetails').innerText
+    const card = e.target.closest(".job-card");
+    if (!card) return;
 
-        parentNode.querySelector('.jobStatus').innerText = 'Interview'
+    const jobName = card.querySelector(".jobName").innerText;
+    const jobPosition = card.querySelector(".jobPosition").innerText;
+    const jobSalary = card.querySelector(".jobSalary").innerText;
+    const jobDetails = card.querySelector(".jobDetails").innerText;
+    const statusBtn = card.querySelector(".jobStatus");
 
-        const cardDetails = {
-            jobName,
-            jobPosition,
-            jobSalary,
-            jobStatus: 'Interview',
-            jobDetails
-        }
-        // console.log(cardDetails)
+    const jobData = {
+        jobName,
+        jobPosition,
+        jobSalary,
+        jobDetails
+    };
 
+    if (e.target.classList.contains("interview-btn")) {
 
-        const jobExist = totalInterview.find(i => i.jobName == cardDetails.jobName)
-        
-
-        if (!jobExist) {
-            totalInterview.push(cardDetails)
+        const exists = totalInterview.find(j => j.jobName === jobName);
+        if (!exists) {
+            totalInterview.push(jobData);
         }
 
-        jobCount()
-        renderInterview()
+        totalRejection = totalRejection.filter(j => j.jobName !== jobName);
+
+        statusBtn.innerText = "Applied";
+
+        updateCount();
+
+        if (currentFilter === "interview-btn") {
+            renderFiltered(totalInterview);
+        }
+    }
+    if (event.target.classList.contains("reject-btn")) {
+
+        const exists = totalRejection.find(j => j.jobName === jobName);
+        if (!exists) {
+            totalRejection.push(jobData);
+        }
+
+        totalInterview = totalInterview.filter(j => j.jobName !== jobName);
+
+        statusBtn.innerText = "Rejected";
+
+        updateCount();
+
+        if (currentFilter === "reject-btn") {
+            renderFiltered(totalRejection);
+        }
+    }
+    if (e.target.closest(".delete-btn")) {
+
+        card.remove();
+
+        totalInterview = totalInterview.filter(j => j.jobName !== jobName);
+        totalRejection = totalRejection.filter(j => j.jobName !== jobName);
+
+        updateCount();
+
+        if (currentFilter === "interview-btn") {
+            renderFiltered(totalInterview);
+        }
+
+        if (currentFilter === "reject-btn") {
+            renderFiltered(totalRejection);
+        }
     }
 
-})
+});
 
-function renderInterview() {
-    afterFilter.innerHTML = ''
+function renderFiltered(dataArray) {
 
-    for (let interview of totalInterview) {
+    afterFilter.innerHTML = "";
 
-        console.log(interview)
+    dataArray.forEach(job => {
 
-        let div = document.createElement('div');
-        div.className = 'cardsItems'
+        const div = document.createElement("div");
+        div.className = "border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card ";
+
         div.innerHTML = `
-        <div class="border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white">
+            
                 <div>
                     <div class="mb-2">
-                        <p class=" jobName text-2xl font-bold">${interview.jobName}</p>
-                        <p class=" jobPosition text-gray-500">${interview.jobPosition}</p>
+                        <p class="jobName text-2xl font-bold">${job.jobName}</p>
+                        <p class="jobPosition text-gray-500">${job.jobPosition}</p>
                     </div>
-                    <p class=" jobSalary mb-2 text-gray-500">${interview.jobSalary}</p>
-                    <div class=" mb-5">
-                        <button class=" jobStatus bg-blue-100 py-1 px-2 rounded-b-sm text-gray-900 mb-2">${interview.jobStatus}</button>
-                        <p class="jobDetails text-gray-700">${interview.jobDetails}</p>
+
+                    <p class="jobSalary mb-2 text-gray-500">
+                        ${job.jobSalary}
+                    </p>
+
+                    <div class="mb-5">
+                        <button class="jobStatus bg-blue-100 py-1 px-2 rounded text-gray-900 mb-2">
+                        ${currentFilter === "interview-btn" ? "Interview" : "Rejected"}
+                            
+                        </button>
+
+                        <p class="jobDetails text-gray-700">
+                            ${job.jobDetails}
+                        </p>
                     </div>
-                    <div>
+
+                    <div class="flex gap-3">
                         <button
-                            class="border rounded-sm py-2 px-3 font-semibold uppercase border-green-600 text-green-600 cursor-pointer interview-btn">Interview</button>
-                        <button
-                            class="border rounded-sm py-2 px-3 font-semibold uppercase mx-1 border-red-600 text-red-600 cursor-pointer">Rejected</button>
+                            class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
+                            Interview
+                        </button>
+
+                        <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
+                            Rejected
+                        </button>
                     </div>
                 </div>
 
                 <div>
-                    <button class="border rounded-full p-2 border-gray-300 cursor-pointer"><i
-                            class="fa-solid fa-trash-can"></i></button>
+                    <button class="delete-btn border rounded-full p-2 border-gray-300">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                 </div>
-            </div>
             
-            </div>
-        `
-        afterFilter.appendChild(div)
-    }
+
+
+        `;
+
+        afterFilter.appendChild(div);
+    });
 }
