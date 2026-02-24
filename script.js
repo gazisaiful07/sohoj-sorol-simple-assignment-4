@@ -16,7 +16,7 @@ const afterFilter = document.getElementById('after-filter')
 
 
 function jobCount() {
-    document.querySelectorAll('#cardsItems .border').length
+    document.querySelectorAll('#cardsItems').length
     selectInterview.innerText = totalInterview.length
     rejectedList.innerText = totalRejection.length
 }
@@ -80,23 +80,26 @@ mainContainer.addEventListener('click', function (event) {
         const jobStatus = parentNode.querySelector('.jobStatus').innerText
         const jobDetails = parentNode.querySelector('.jobDetails').innerText
 
+        parentNode.querySelector('.jobStatus').innerText = 'Interview'
+
         const cardDetails = {
             jobName,
             jobPosition,
             jobSalary,
-            jobStatus,
+            jobStatus: 'Interview',
             jobDetails
         }
         // console.log(cardDetails)
 
 
         const jobExist = totalInterview.find(i => i.jobName == cardDetails.jobName)
-        parentNode.querySelector('.jobStatus').innerText = 'Interview'
+        
 
         if (!jobExist) {
             totalInterview.push(cardDetails)
         }
 
+        jobCount()
         renderInterview()
     }
 
@@ -116,16 +119,12 @@ function renderInterview() {
                 <div>
                     <div class="mb-2">
                         <p class=" jobName text-2xl font-bold">${interview.jobName}</p>
-                        <p class=" jobPosition text-gray-500">React Native Developer</p>
+                        <p class=" jobPosition text-gray-500">${interview.jobPosition}</p>
                     </div>
-                    <p class=" jobSalary mb-2 text-gray-500">Remote • Full-time • $130,000 - $175,000 </p>
+                    <p class=" jobSalary mb-2 text-gray-500">${interview.jobSalary}</p>
                     <div class=" mb-5">
-                        <button class=" jobStatus bg-blue-100 py-1 px-2 rounded-b-sm text-gray-900 mb-2">NOT
-                            APPLIED</button>
-                        <p class="jobDetails text-gray-700">Build cross-platform mobile applications using React
-                            Native. Work on
-                            products used by millions of
-                            users worldwide.</p>
+                        <button class=" jobStatus bg-blue-100 py-1 px-2 rounded-b-sm text-gray-900 mb-2">${interview.jobStatus}</button>
+                        <p class="jobDetails text-gray-700">${interview.jobDetails}</p>
                     </div>
                     <div>
                         <button
