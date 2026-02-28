@@ -124,46 +124,43 @@ document.querySelector("main").addEventListener("click", function (e) {
 /*Toggle filtering after click*/
 function renderFiltered(dataArray) {
     afterFilter.innerHTML = "";
-    dataArray.forEach(job => {
-        const div = document.createElement("div");
-        div.className = "border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card ";
-        div.innerHTML = `
-            
-                <div>
-                    <div class="mb-2">
-                        <p class="jobName text-2xl font-bold">${job.jobName}</p>
-                        <p class="jobPosition text-gray-500">${job.jobPosition}</p>
-                    </div>
+    for (const job of dataArray) {
+    const div = document.createElement("div");
+    div.className = "border rounded-md border-gray-100 my-4 p-6 flex justify-between bg-white job-card";
+    div.innerHTML = `
+        <div>
+            <div class="mb-2">
+                <p class="jobName text-2xl font-bold">${job.jobName}</p>
+                <p class="jobPosition text-gray-500">${job.jobPosition}</p>
+            </div>
+            <p class="jobSalary mb-2 text-gray-500">
+                ${job.jobSalary}
+            </p>
+            <div class="mb-5">
+                <button class="jobStatus bg-blue-100 py-1 px-2 rounded text-gray-900 mb-2">
+                    ${currentFilter === "interview-btn" ? "Interview" : "Rejected"}
+                </button>
+                <p class="jobDetails text-gray-700">
+                    ${job.jobDetails}
+                </p>
+            </div>
+            <div class="flex gap-3">
+                <button class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
+                    Interview
+                </button>
 
-                    <p class="jobSalary mb-2 text-gray-500">
-                        ${job.jobSalary}
-                    </p>
+                <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
+                    Rejected
+                </button>
+            </div>
+        </div>
+        <div>
+            <button class="delete-btn border rounded-full p-2 border-gray-300">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+        </div>
+    `;
 
-                    <div class="mb-5">
-                        <button class="jobStatus bg-blue-100 py-1 px-2 rounded text-gray-900 mb-2">
-                        ${currentFilter === "interview-btn" ? "Interview" : "Rejected"} 
-                        </button>
-                        <p class="jobDetails text-gray-700">
-                            ${job.jobDetails}
-                        </p>
-                    </div>
-                    <div class="flex gap-3">
-                        <button
-                            class="interview-btn border py-2 px-3 font-semibold uppercase border-green-600 text-green-600">
-                            Interview
-                        </button>
-
-                        <button class="reject-btn border py-2 px-3 font-semibold uppercase border-red-600 text-red-600">
-                            Rejected
-                        </button>
-                    </div>
-                </div>
-                <div>
-                    <button class="delete-btn border rounded-full p-2 border-gray-300">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>
-        `;
-        afterFilter.appendChild(div);
-    });
+    afterFilter.appendChild(div);
+}
 }
